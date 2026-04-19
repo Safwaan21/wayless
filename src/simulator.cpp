@@ -7,6 +7,7 @@ int main()
     sf::CircleShape circle(10);
     circle.setFillColor(sf::Color::Green);
 
+    window.setVerticalSyncEnabled(true);
     while (window.isOpen())
     {
         while (const std::optional event = window.pollEvent())
