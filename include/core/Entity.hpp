@@ -10,8 +10,12 @@ public:
     {
         return id;
     }
-
+    Pos2 getPos() const
+    {
+        return pos;
+    }
+protected:
+    Pos2 pos;
 private:
     EntityId id{};
-    Pos2 pos;
 };
