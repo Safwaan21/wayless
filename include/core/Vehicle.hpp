@@ -4,6 +4,7 @@
 #include "Types.hpp"
 #include "Entity.hpp"
 #include <stdexcept>
+#include <cmath>
 
 class VehicleBuilder
 {
@@ -67,6 +68,20 @@ class Vehicle : public Entity
 {
 friend class VehicleBuilder;
 public:
+    void update(float speed, float steeringAngle, float dt)
+    {
+	if (steeringAngle != 0.0f)
+	{
+	    float R = wheelbase / std::tan(steeringAngle) + trackWidth / 2.0f;
+	    angularVelocity = speed / R;
+	    heading += angularVelocity * dt;
+	}
+	else
+	{
+	    angularVelocity = 0.0f;
+	}
+	pos = pos + Pos2(speed * std::cos(heading), speed * std::sin(heading)) * dt;
+    }
 private:
     float heading;
     float speed{};
