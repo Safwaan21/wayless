@@ -12,7 +12,7 @@ public:
     }
     Pos2 getPos() const
     {
-	return pos;
+        return pos;
     }
 protected:
     Pos2 pos;
