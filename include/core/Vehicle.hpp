@@ -11,44 +11,44 @@ class VehicleBuilder
 public:
     VehicleBuilder& withPos(Pos2 pos)
     {
-	this->pos = pos;
-	hasPos = true;
-	return *this;
+        this->pos = pos;
+        hasPos = true;
+        return *this;
     }
     VehicleBuilder& withHeading(float heading)
     {
-	this->heading = heading;
-	hasHeading = true;
-	return *this;
+        this->heading = heading;
+        hasHeading = true;
+        return *this;
     }
     VehicleBuilder& withWheelbase(float wheelbase)
     {
-	this->wheelbase = wheelbase;
-	hasWheelbase = true;
-	return *this;
+        this->wheelbase = wheelbase;
+        hasWheelbase = true;
+        return *this;
     }
     VehicleBuilder& withTrackWidth(float trackWidth)
     {
-	this->trackWidth = trackWidth;
-	hasTrackWidth = true;
-	return *this;
+        this->trackWidth = trackWidth;
+        hasTrackWidth = true;
+        return *this;
     }
     Vehicle build()
     {
-	if (!hasPos)        throw std::invalid_argument("VehicleBuilder: pos is required");
-	if (!hasHeading)    throw std::invalid_argument("VehicleBuilder: heading is required");
-	if (!hasWheelbase)  throw std::invalid_argument("VehicleBuilder: wheelbase is required");
-	if (!hasTrackWidth) throw std::invalid_argument("VehicleBuilder: trackWidth is required");
+        if (!hasPos)        throw std::invalid_argument("VehicleBuilder: pos is required");
+        if (!hasHeading)    throw std::invalid_argument("VehicleBuilder: heading is required");
+        if (!hasWheelbase)  throw std::invalid_argument("VehicleBuilder: wheelbase is required");
+        if (!hasTrackWidth) throw std::invalid_argument("VehicleBuilder: trackWidth is required");
 
-	Vehicle v;
+        Vehicle v;
 
-	v.pos = this->pos;
-	v.heading = this->heading;
-	v.wheelbase = this->wheelbase;
-	v.trackWidth = this->trackWidth;
-	// TODO: implement remaining with functions for other optional params
-	
-	return v;
+        v.pos = this->pos;
+        v.heading = this->heading;
+        v.wheelbase = this->wheelbase;
+        v.trackWidth = this->trackWidth;
+        // TODO: implement remaining with functions for other optional params
+
+        return v;
     }
 private:
     Pos2 pos;
@@ -70,17 +70,17 @@ friend class VehicleBuilder;
 public:
     void update(float speed, float steeringAngle, float dt)
     {
-	if (steeringAngle != 0.0f)
-	{
-	    float R = wheelbase / std::tan(steeringAngle) + trackWidth / 2.0f;
-	    angularVelocity = speed / R;
-	    heading += angularVelocity * dt;
-	}
-	else
-	{
-	    angularVelocity = 0.0f;
-	}
-	pos = pos + Pos2(speed * std::cos(heading), speed * std::sin(heading)) * dt;
+        if (steeringAngle != 0.0f)
+        {
+            float R = wheelbase / std::tan(steeringAngle) + trackWidth / 2.0f;
+            angularVelocity = speed / R;
+            heading += angularVelocity * dt;
+        }
+        else
+        {
+            angularVelocity = 0.0f;
+        }
+        pos = pos + Pos2(speed * std::cos(heading), speed * std::sin(heading)) * dt;
     }
 private:
     float heading;
