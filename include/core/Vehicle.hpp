@@ -1,21 +1,50 @@
 #pragma once
 
 #include "Pos2.hpp"
-#include "Types.hpp"
 #include "Entity.hpp"
+#include "Angle.hpp"
+#include "AngularVelocity.hpp"
 #include <stdexcept>
 #include <cmath>
+#include <utility>
+
+class Vehicle : public Entity
+{
+friend class VehicleBuilder;
+public:
+    void update(float speed, Angle steeringAngle, float dt)
+    {
+        if (steeringAngle.radians() != 0.0f)
+        {
+            float R = wheelbase / std::tan(steeringAngle.radians()) + trackWidth / 2.0f;
+            angularVelocity = AngularVelocity::fromRadiansPerSecond(speed / R);
+            heading += angularVelocity * dt;
+        }
+        else
+        {
+            angularVelocity = AngularVelocity{};
+        }
+        pos = pos + Pos2(speed * std::cos(heading.radians()), speed * std::sin(heading.radians())) * dt;
+    }
+private:
+    Angle heading;
+    float speed{};
+    AngularVelocity angularVelocity{};
+    Angle steeringAngle{};
+    float wheelbase;   // front-to-back distance between wheel-centres
+    float trackWidth;  // left-to-right distance between wheel-centres
+};
 
 class VehicleBuilder
 {
 public:
     VehicleBuilder& withPos(Pos2 pos)
     {
-        this->pos = pos;
+        this->pos = std::move(pos);
         hasPos = true;
         return *this;
     }
-    VehicleBuilder& withHeading(float heading)
+    VehicleBuilder& withHeading(Angle heading)
     {
         this->heading = heading;
         hasHeading = true;
@@ -52,10 +81,10 @@ public:
     }
 private:
     Pos2 pos;
-    float heading;
+    Angle heading;
     float speed{};
-    float angularVelocity{};
-    float steeringAngle{};
+    AngularVelocity angularVelocity{};
+    Angle steeringAngle{};
     float wheelbase;
     float trackWidth;
     bool hasPos{};
@@ -64,29 +93,3 @@ private:
     bool hasTrackWidth{};
 };
 
-class Vehicle : public Entity
-{
-friend class VehicleBuilder;
-public:
-    void update(float speed, float steeringAngle, float dt)
-    {
-        if (steeringAngle != 0.0f)
-        {
-            float R = wheelbase / std::tan(steeringAngle) + trackWidth / 2.0f;
-            angularVelocity = speed / R;
-            heading += angularVelocity * dt;
-        }
-        else
-        {
-            angularVelocity = 0.0f;
-        }
-        pos = pos + Pos2(speed * std::cos(heading), speed * std::sin(heading)) * dt;
-    }
-private:
-    float heading;
-    float speed{};
-    float angularVelocity{};
-    float steeringAngle{};
-    float wheelbase;   // front-to-back distance between wheel-centres
-    float trackWidth;  // left-to-right distance between wheel-centres
-};
