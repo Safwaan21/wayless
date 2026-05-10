@@ -1,4 +1,5 @@
 #include <SFML/Graphics.hpp>
+// TODO: make pixel-to-meters conversion, create Vehicle using VehicleBuilder, add a clock, call update() each frame
 
 int main()
 {
