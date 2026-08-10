@@ -4,7 +4,7 @@
     {
       "name": "default",
       "binaryDir": "${sourceDir}/build",
-      "toolchainFile": "$env{HOME}/vcpkg/scripts/buildsystems/vcpkg.cmake"
+      "toolchainFile": "$env{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake"
     }
   ],
   "buildPresets": [
